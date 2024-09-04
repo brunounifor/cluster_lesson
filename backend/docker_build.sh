@@ -1,0 +1,1 @@
+docker build -t cluster-backend:v1 .

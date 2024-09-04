@@ -1,40 +1,106 @@
+## Estrutura do Projeto
 
-# Building a Monorepo with React Native, React, and Node.js: A Small Project Todo List
+```plaintext
+CONTROLE-HSO-KUBERNETES/
+├── backend/
+│   ├── __init__.py
+│   ├── app.py
+│   ├── Dockerfile.backend
+│   ├── models.py
+│   ├── requirements.txt
+│   └── routes.py
+├── frontend/
+│   ├── assets/
+│   ├── Dockerfile.frontend
+│   ├── index.html
+│   ├── script.js
+│   └── style.css
+├── Dockerfile.postgres
+├── README.md
+├── backend-deployment.yml
+├── backend-service.yml
+├── frontend-deployment.yml
+├── frontend-service.yml
+├── postgres-deployment.yml
+└── postgres-service.yml
+```
+## Pré-requisitos
 
-Introduction:
-In modern software development, monorepos have gained popularity due to their ability to manage multiple projects within a single code repository. In this post, we will explore the process of building a monorepo using React Native, React, and Node.js. Our focus will be on creating a small project todo list, allowing us to better understand how these technologies can work together seamlessly.
+- Docker
+- Kind (Kubernetes in Docker)
+- kubectl
 
-What is a Monorepo?
-A monorepo is a software development approach where multiple projects are stored in a single code repository. It provides a centralized location for managing and versioning code, making it easier to share and reuse components across projects. This approach can improve code organization, collaboration, and development efficiency.
+## Passo a Passo para Configuração
 
-Choosing the Right Technologies:
-For our small project todo list, we have opted to use React Native for the mobile application development, React for the web interface, and Node.js for the backend. React Native allows us to build native mobile apps using JavaScript, while React enables us to create reusable UI components for both the web and mobile interfaces. Node.js, with its event-driven architecture, provides a scalable and efficient backend for our application.
+### 1. Build das Imagens Docker
 
-Setting Up the Monorepo:
-To start, we'll initialize a new Git repository and create separate directories for each project within the monorepo. We can structure the directories based on our needs, such as having a mobile directory for the React Native app, a web directory for the React web interface, and a backend directory for the Node.js backend. Each project can have its own dependencies, configurations, and build scripts.
+Primeiro, você deve criar as imagens Docker para cada componente.
 
-Sharing Code:
-One of the key advantages of a monorepo is the ability to share code across projects. We can create a shared directory within the monorepo to store common components, utilities, and business logic. This way, we can avoid duplicating code and ensure consistency between the different parts of our application.
+#### Backend
 
-Managing Dependencies:
-Managing dependencies in a monorepo can be challenging, but there are tools available to simplify the process. We can use package managers like Yarn or npm, along with tools like Lerna or Yarn Workspaces, to manage dependencies and ensure they are installed correctly for each project. These tools help maintain a coherent set of dependencies across the monorepo and provide efficient workflows for development and deployment.
+Navegue até a pasta `backend` e execute:
 
-Building and Testing:
-To build and test our projects, we can utilize the respective tools and frameworks available for each technology. React Native provides a command-line interface (CLI) for building and running the mobile app, while React has tools like Create React App for bootstrapping web projects. For Node.js, we can use popular frameworks like Express.js and testing libraries such as Jest or Mocha to ensure the stability and quality of our backend code.
+```bash
+sh ./docker_build.sh
+```
 
-Continuous Integration and Deployment:
-Implementing a CI/CD (Continuous Integration and Deployment) pipeline becomes crucial in a monorepo setup. Tools like Jenkins, CircleCI, or GitHub Actions can be used to automate the build, test, and deployment processes. By leveraging these tools, we can ensure that changes made to any part of the monorepo are thoroughly tested and deployed seamlessly to the appropriate environments.
+#### Frontend
 
-Conclusion:
-Building a monorepo with React Native, React, and Node.js offers a powerful approach for managing multiple projects within a single code repository. By centralizing our codebase, sharing components, and efficiently managing dependencies, we can improve collaboration and development speed. With the small project todo list as an example, we have explored the essential steps and considerations involved in setting up a monorepo using these technologies. We encourage you to explore this approach further and adapt it to your own projects.
+Navegue até a pasta `frontend` e execute:
 
+```bash
+sh ./docker_build.sh
+```
 
-## Screenshots
+#### Banco de Dados - MongoDB
 
-![App Screenshot](https://raw.githubusercontent.com/SugandSingh/MonoRepo_with_fullStackTodoList/main/AppScreenShot/Screenshot%202023-07-26%20at%205.47.29%20PM.png)
+Navegue até a pasta `database` e execute:
 
+```bash
+sh ./docker_build.sh
+```
 
-## Authors
+### 2. Criar um Cluster no Kind
 
-- [@SugandSingh](https://www.github.com/SugandSingh)
+Crie um cluster Kubernetes utilizando `kind`:
 
+```bash
+kind create cluster --name todo-list
+```
+
+### 3. Carregar as Imagens no Cluster
+
+Para carregar as imagens Docker que você acabou de buildar no cluster `kind`, utilize:
+
+```bash
+kind load docker-image cluster-backend:v1 --name todo-list
+kind load docker-image cluster-frontend:v1 --name todo-list
+kind load docker-image cluster-database:v1 --name todo-list
+```
+
+### 4. Aplicar os Deployments e Services
+
+Aplique os arquivos de configuração:
+
+```bash
+kubectl apply -f backend-deployment.yml
+kubectl apply -f backend-service.yml
+
+kubectl apply -f frontend-deployment.yml
+kubectl apply -f frontend-service.yml
+
+kubectl apply -f postgres-deployment.yml
+kubectl apply -f postgres-service.yml
+
+Poderia ser utilizado apenas um arquivo de deployment e incluido o service dentro dele mais preferi separar para deixar mais fácil de entendimento.
+```
+
+### 5. Configurar o Port-Forward
+
+Por fim, você pode acessar a aplicação através do serviço frontend utilizando o comando:
+
+```bash
+kubectl port-forward service/frontend 8080:80
+```
+
+Agora, você pode acessar a aplicação no navegador através do endereço [http://localhost:8080](http://localhost:8080).

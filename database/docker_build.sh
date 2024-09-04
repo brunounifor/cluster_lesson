@@ -1,0 +1,1 @@
+docker build -t cluster-database:v1 .
