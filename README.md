@@ -83,14 +83,14 @@ kind load docker-image cluster-database:v1 --name todo-list
 Aplique os arquivos de configuração:
 
 ```bash
-kubectl apply -f backend-deployment.yml
-kubectl apply -f backend-service.yml
+kubectl apply -f backend-deployment.yaml
+kubectl apply -f backend-service.yaml
 
-kubectl apply -f frontend-deployment.yml
-kubectl apply -f frontend-service.yml
+kubectl apply -f frontend-deployment.yaml
+kubectl apply -f frontend-service.yaml
 
-kubectl apply -f postgres-deployment.yml
-kubectl apply -f postgres-service.yml
+kubectl apply -f database-deployment.yaml
+kubectl apply -f database-service.yaml
 
 Poderia ser utilizado apenas um arquivo de deployment e incluido o service dentro dele mais preferi separar para deixar mais fácil de entendimento.
 ```
@@ -100,7 +100,7 @@ Poderia ser utilizado apenas um arquivo de deployment e incluido o service dentr
 Por fim, você pode acessar a aplicação através do serviço frontend utilizando o comando:
 
 ```bash
-kubectl port-forward service/frontend 8080:80
+kubectl port-forward service/frontend 8080:3000
 ```
 
 Agora, você pode acessar a aplicação no navegador através do endereço [http://localhost:8080](http://localhost:8080).
