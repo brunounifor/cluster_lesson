@@ -17,6 +17,3 @@ spec:
         image: cluster-frontend:v1
         ports:
         - containerPort: 3000
-        env:
-        - name: BACKEND_URL
-          value: http://backend
