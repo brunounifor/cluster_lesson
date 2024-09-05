@@ -18,6 +18,6 @@ spec:
         ports:
         - containerPort: 1997
         env:
-        - name: MONGODB_URI
-          value: "mongodb://root:example@localhost:27017/todo?authSource=admin"
+        - name: MONGODB_URL
+          value: mongodb://mongodb:27017/todo
 

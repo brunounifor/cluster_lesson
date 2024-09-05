@@ -3,7 +3,9 @@ import axios from "axios";
 // Set the base URL for the API
 // Use 'localhost' for development on the Android emulator
 // Change this to the appropriate URL when deploying the app
-const baseUrl = "http://backend:1997";
+console.log(process.env.BACKEND_URL)
+// const baseUrl = process.env.BACKEND_URL ? `${process.env.BACKEND_URL}:1997` : 'http://localhost:1997';
+const baseUrl = 'http://backend:1997';
 
 // Function to get all ToDo items from the server
 const getAllToDo = async (
