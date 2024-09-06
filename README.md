@@ -42,11 +42,11 @@ __________ Guia de Configuração: __________
 -   Etapa 1. Construção das Imagens Docker:
     Cada parte do projeto requer a criação de imagens Docker. Abaixo estão os comandos que você deve executar dentro das respectivas pastas:
 
-        * Backend: 
+        * Database:
             sh ./docker_build.sh
         * Frontend:
             sh ./docker_build.sh
-        * Database:
+        * Backend: 
             sh ./docker_build.sh
 
 -   Etapa 2. Criação do Cluster Kubernetes:
@@ -57,23 +57,23 @@ __________ Guia de Configuração: __________
 -   Etapa 3. Carregar Imagens no Cluster:
     Com as imagens Docker prontas, o próximo passo é carregá-las no cluster Kubernetes que você acabou de criar. Para isso, utilize os comandos a seguir:
 
-        kind load docker-image cluster-backend:v1 --name todo-list
-        kind load docker-image cluster-frontend:v1 --name todo-list
         kind load docker-image cluster-database:v1 --name todo-list
+        kind load docker-image cluster-frontend:v1 --name todo-list
+        kind load docker-image cluster-backend:v1 --name todo-list
 
 
 -   Etapa 4. Aplicar Configurações Kubernetes:
     Agora, aplique os arquivos de configuração para cada parte do sistema (backend, frontend e banco de dados). Execute os comandos conforme mostrado abaixo:
 
-        * Backend: 
-            kubectl apply -f backend-deployment.yaml
-            kubectl apply -f backend-service.yaml
-        * Frontend:
-            kubectl apply -f frontend-deployment.yaml
-            kubectl apply -f frontend-service.yaml
         * Database:
             kubectl apply -f db-deployment.yaml
             kubectl apply -f db-service.yaml
+        * Frontend:
+            kubectl apply -f frontend-deployment.yaml
+            kubectl apply -f frontend-service.yaml
+        * Backend: 
+            kubectl apply -f backend-deployment.yaml
+            kubectl apply -f backend-service.yaml
 
 -   Etapa 5. Exposição dos Serviços:
     Para acessar os serviços localmente, você precisará usar o comando port-forward para mapear as portas. Siga as instruções abaixo:
@@ -81,7 +81,7 @@ __________ Guia de Configuração: __________
         * Backend:
             kubectl port-forward service/backend 1997:1997
         * Frontend:
-            kubectl port-forward service/frontend 8080:3000
+            kubectl port-forward service/frontend 8080:4173
 
 Pronto! Se todos os passos tiverem sido executados corretamente, a aplicação está configurada e rodando localmente no Kubernetes.
 Agora, você pode abrir seu navegador e acessar a aplicação através de http://localhost:8080.
