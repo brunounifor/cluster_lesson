@@ -8,10 +8,10 @@ WORKDIR /app
 COPY . /app
 
 # Install any necessary dependencies
-RUN yarn install
+RUN npm install
 
 # Compile TypeScript code into JavaScript
-RUN yarn build
+RUN npm run build
 
 # Define the command to start the app
-CMD [ "yarn", "start"]
+CMD [ "npm", "run", "preview"]

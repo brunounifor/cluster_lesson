@@ -3,28 +3,32 @@ __________ Configuração do Projeto Kubernetes: __________
 -   Visão Geral do Projeto:
     O projeto está organizado nas seguintes pastas e arquivos principais:
 
-        CONTROLE-HSO-KUBERNETES/
-        ├── backend/
-        │   ├── __init__.py
-        │   ├── app.py
-        │   ├── Dockerfile.backend
-        │   ├── models.py
-        │   ├── requirements.txt
-        │   └── routes.py
-        ├── frontend/
-        │   ├── assets/
-        │   ├── Dockerfile.frontend
-        │   ├── index.html
-        │   ├── script.js
-        │   └── style.css
-        ├── Dockerfile.postgres
-        ├── README.md
-        ├── backend-deployment.yml
-        ├── backend-service.yml
-        ├── frontend-deployment.yml
-        ├── frontend-service.yml
-        ├── postgres-deployment.yml
-        └── postgres-service.yml
+    ```plaintext
+    CLUSTER_LESSON/
+    ├── backend/
+    │   ├── controllers/
+    │   ├── models/
+    │   ├── routes/
+    │   ├── index.js
+    │   ├── backend-deployment.yaml
+    │   ├── backend-service.yaml
+    │   └── Dockerfile
+    ├── frontend/
+    │   ├── public/
+    │   ├── src/ 
+    │   │   ├── componentes/
+    │   │   └── service/
+    │   ├── App.js
+    │   ├── index.css
+    │   ├── index.js
+    │   ├── Dockerfile
+    │   ├── frontend-deployment.yaml
+    │   └── frontend-service.yaml
+    └── database/
+        ├── Dockerfile
+        ├── db-deployment.yaml
+        └── db-service.yaml
+    ```
 
 -   Ferramentas Necessárias:
     Para rodar esse projeto, você precisa garantir que tem as seguintes ferramentas instaladas no seu ambiente:
@@ -68,8 +72,8 @@ __________ Guia de Configuração: __________
             kubectl apply -f frontend-deployment.yaml
             kubectl apply -f frontend-service.yaml
         * Database:
-            kubectl apply -f database-deployment.yaml
-            kubectl apply -f database-service.yaml
+            kubectl apply -f db-deployment.yaml
+            kubectl apply -f db-service.yaml
 
 -   Etapa 5. Exposição dos Serviços:
     Para acessar os serviços localmente, você precisará usar o comando port-forward para mapear as portas. Siga as instruções abaixo:

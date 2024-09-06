@@ -8,9 +8,9 @@ WORKDIR /app
 COPY . /app
 
 # Install any necessary dependencies
-RUN yarn install
+RUN npm install
 
 # Build dispensable because application is pure JavaScript
 
 # Define the command to start the app
-CMD [ "yarn", "start"]
+CMD [ "npm", "run", "start"]
